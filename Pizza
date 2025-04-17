@@ -1,4 +1,4 @@
-game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Script has been Executed.")
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Hello")
 
 local remote = game.ReplicatedStorage.PlayerChannel
 
