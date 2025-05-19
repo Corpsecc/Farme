@@ -1,5 +1,3 @@
-loadstring(game:HttpGet("https://pastebin.com/raw/YZsrHkDV"))()
-
 local remote = game.ReplicatedStorage.PlayerChannel
 
 local Players = game:GetService("Players")
@@ -403,6 +401,8 @@ do
     Farm_2.Size = UDim2.new(0, 334, 0, 99)
     Farm_2.Style = Enum.FrameStyle.RobloxRound
     Farm_2.Visible = true
+    Farm_2.Active = true
+    Farm_2.Draggable = true
 
     Farm_3.Name = "Farm"
     Farm_3.Parent = Farm_2
@@ -428,12 +428,12 @@ do
     Mais.Size = UDim2.new(0, 46, 0, 16)
     Mais.Font = Enum.Font.FredokaOne
     Mais.Text = "More"
-    Mais.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Mais.TextColor3 = Color3.fromRGB(85, 170, 255)
     Mais.TextSize = 14.000
     Mais.MouseButton1Click:Connect(function()
         if Status.Visible then
             Status.Visible = false
-            Mais.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Mais.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             Status.Visible = true
             Mais.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1004,12 +1004,12 @@ do
     Extra.Size = UDim2.new(0, 46, 0, 16)
     Extra.Font = Enum.Font.FredokaOne
     Extra.Text = "Extra"
-    Extra.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Extra.TextColor3 = Color3.fromRGB(85, 170, 255)
     Extra.TextSize = 14.000
     Extra.MouseButton1Click:Connect(function()
         if Frame_Extra.Visible then
             Frame_Extra.Visible = false
-            Extra.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Extra.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             Frame_Extra.Visible = true
             Extra.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1149,7 +1149,7 @@ do
     Anti_Lag.Style = Enum.ButtonStyle.RobloxButton
     Anti_Lag.Font = Enum.Font.FredokaOne
     Anti_Lag.Text = "Anti Lag"
-    Anti_Lag.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Anti_Lag.TextColor3 = Color3.fromRGB(85, 170, 255)
     Anti_Lag.TextSize = 14.000
     Anti_Lag.MouseButton1Click:Connect(function()
         if Anti_LagV then
@@ -1158,7 +1158,7 @@ do
                 antd:Disconnect()
             end
             game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-            Anti_Lag.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Anti_Lag.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             Anti_LagV = true
             Anti_Lag.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1212,12 +1212,12 @@ do
     Invisibilidade.Style = Enum.ButtonStyle.RobloxButton
     Invisibilidade.Font = Enum.Font.FredokaOne
     Invisibilidade.Text = "Invisibility"
-    Invisibilidade.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Invisibilidade.TextColor3 = Color3.fromRGB(85, 170, 255)
     Invisibilidade.TextSize = 14.000
     Invisibilidade.MouseButton1Click:Connect(function()
         if InvisibilidadeV then
             InvisibilidadeV = false
-            Invisibilidade.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Invisibilidade.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             InvisibilidadeV = true
             stay()
@@ -1348,10 +1348,10 @@ do
     Caixar.Style = Enum.ButtonStyle.RobloxButton
     Caixar.Font = Enum.Font.FredokaOne
     Caixar.Text = "Cashier"
-    Caixar.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Caixar.TextColor3 = Color3.fromRGB(85, 170, 255)
     Caixar.TextSize = 14.000
     Caixar.MouseButton1Click:Connect(function()
-        Caixar.TextColor3 = doCaixa and Color3.fromRGB(254, 85, 55) or Color3.fromRGB(254, 223, 128)
+        Caixar.TextColor3 = doCaixa and Color3.fromRGB(85, 170, 255) or Color3.fromRGB(254, 223, 128)
         doCaixa = not doCaixa
     end)
 
@@ -1366,12 +1366,12 @@ do
     Cozinha.Style = Enum.ButtonStyle.RobloxButton
     Cozinha.Font = Enum.Font.FredokaOne
     Cozinha.Text = "Cook"
-    Cozinha.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Cozinha.TextColor3 = Color3.fromRGB(85, 170, 255)
     Cozinha.TextSize = 14.000
     Cozinha.MouseButton1Click:Connect(function()
         if doCozinha then
             doCozinha = false
-            Cozinha.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Cozinha.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             doCozinha =  true
             Cozinha.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1389,12 +1389,12 @@ do
     Entregador.Style = Enum.ButtonStyle.RobloxButton
     Entregador.Font = Enum.Font.FredokaOne
     Entregador.Text = "Delivery"
-    Entregador.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Entregador.TextColor3 = Color3.fromRGB(85, 170, 255)
     Entregador.TextSize = 14.000
     Entregador.MouseButton1Click:Connect(function()
         if doEntregador then
             doEntregador = false
-            Entregador.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Entregador.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             doEntregador = true
             Entregador.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1412,12 +1412,12 @@ do
     Empacotador.Style = Enum.ButtonStyle.RobloxButton
     Empacotador.Font = Enum.Font.FredokaOne
     Empacotador.Text = "Boxer"
-    Empacotador.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Empacotador.TextColor3 = Color3.fromRGB(85, 170, 255)
     Empacotador.TextSize = 14.000
     Empacotador.MouseButton1Click:Connect(function()
         if doEmpacotador then
             doEmpacotador = false
-            Empacotador.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Empacotador.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             doEmpacotador =  true
             Empacotador.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1466,12 +1466,12 @@ do
     Fornecedor_2.Style = Enum.ButtonStyle.RobloxButton
     Fornecedor_2.Font = Enum.Font.FredokaOne
     Fornecedor_2.Text = "Supplier"
-    Fornecedor_2.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Fornecedor_2.TextColor3 = Color3.fromRGB(85, 170, 255)
     Fornecedor_2.TextSize = 14.000
     Fornecedor_2.MouseButton1Click:Connect(function()
         if doFornecedor then
             doFornecedor = false
-            Fornecedor_2.TextColor3 = Color3.fromRGB(254, 85, 55)
+            Fornecedor_2.TextColor3 = Color3.fromRGB(85, 170, 255)
         else
             doFornecedor =  true
             Fornecedor_2.TextColor3 = Color3.fromRGB(254, 223, 128)
@@ -1489,7 +1489,7 @@ do
     Des.Style = Enum.ButtonStyle.RobloxButton
     Des.Font = Enum.Font.FredokaOne
     Des.Text = "Activate all"
-    Des.TextColor3 = Color3.fromRGB(254, 85, 55)
+    Des.TextColor3 = Color3.fromRGB(85, 170, 255)
     Des.TextSize = 14.000
     local DesV = false
     Des.MouseButton1Click:Connect(function()
