@@ -1062,7 +1062,7 @@ do
     ID_2.Position = UDim2.new(0.718999982, 0, -0.050999999, 0)
     ID_2.Size = UDim2.new(0, 23, 0, 17)
     ID_2.Font = Enum.Font.FredokaOne
-    ID_2.Text = "50"
+    ID_2.Text = "99"
     ID_2.TextColor3 = Color3.fromRGB(254, 223, 128)
     ID_2.TextSize = 14.000
     ID_2.Changed:Connect(function()
@@ -1077,7 +1077,7 @@ do
     ID_3.Position = UDim2.new(0.981000006, 0, -0.050999999, 0)
     ID_3.Size = UDim2.new(0, 23, 0, 17)
     ID_3.Font = Enum.Font.FredokaOne
-    ID_3.Text = "0"
+    ID_3.Text = "90"
     ID_3.TextColor3 = Color3.fromRGB(254, 223, 128)
     ID_3.TextSize = 14.000
     ID_3.Changed:Connect(function()
