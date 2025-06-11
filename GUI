@@ -939,6 +939,13 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Freeloading Script (for fru).",
+   Callback = function()
+   loadstring(game:HttpGet("https://pastebin.com/raw/tt5V6eVW"))() 
+   end,
+})
+
 local player = game.Players.LocalPlayer
 local VirtualUser = game:GetService("VirtualUser")
 
