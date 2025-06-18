@@ -289,8 +289,61 @@ local Slider = Tab:CreateSlider({
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
    end,
 })
+local Section = Tab:CreateSection("Extra.")
 
--- AutoFarm Stuff
+local Button = Tab:CreateButton({
+   Name = "Money Counter.",
+   Callback = function()
+    local player = game.Players.LocalPlayer
+local playerGui = game:WaitForChild("CoreGui")
+local moneyValue = player:WaitForChild("Moneyz")
+
+-- Alte GUI entfernen, falls vorhanden
+local existingGui = playerGui:FindFirstChild("MoneyDisplay")
+if existingGui then
+    existingGui:Destroy()
+end
+
+-- ScreenGui erstellen
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MoneyDisplay"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+-- TextLabel erstellen (füllt gesamten Bildschirm aus)
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(1, 0, 1, 0)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
+textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+textLabel.BackgroundTransparency = 1 -- Unsichtbarer Hintergrund
+textLabel.TextColor3 = Color3.new(0, 0, 0)
+textLabel.TextTransparency = 0      -- Unsichtbarer Text
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextScaled = true
+textLabel.Text = "Money: 0"
+textLabel.Parent = screenGui
+
+-- Funktion zur Formatierung mit Tausendertrennzeichen
+local function formatWithCommas(number)
+    local formatted = tostring(number)
+    while true do
+        formatted, k = formatted:gsub("^(-?%d+)(%d%d%d)", '%1,%2')
+        if k == 0 then break end
+    end
+    return formatted
+end
+
+-- Update-Loop
+task.spawn(function()
+    while true do
+        pcall(function()
+            textLabel.Text = "Money: " .. formatWithCommas(moneyValue.Value)
+        end)
+        task.wait(1)
+    end
+end)
+   end,
+})
 
 local Tab = Window:CreateTab("Farme Stuff.", "rewind")
 local Section = Tab:CreateSection("Main.")
@@ -1030,7 +1083,7 @@ local Button = Tab:CreateButton({
    end,
 })
 
-local Tab = Window:CreateTab("Teleport's. ", nil) -- Title, Image
+local Tab = Window:CreateTab("Teleport's. ", "rewind") -- Title, Image
  local Section = Tab:CreateSection(" Important Teleport's. ")
 
  local Button = Tab:CreateButton({
@@ -1105,8 +1158,21 @@ hrp.CFrame = target.CFrame + Vector3.new(0, 5, 0)
     end,
  })
 
-local Tab = Window:CreateTab("Usefull Stuff. ", nil) -- Title, Image
+local Tab = Window:CreateTab("Usefull Stuff. ", "rewind") -- Title, Image
  local Section = Tab:CreateSection("Main. ")
+
+
+Tab:CreateButton({
+    Name = "Press and read before using Event Present's.",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "READ BEFORE YOU USE ANY PRESENT TYPE.",
+            Content = "For this to work send me an dm and i will join with my account(only affect's the Event Present's).",
+            Duration = 15, -- seconds
+            Image =  "rewind", -- optional image asset ID
+        })
+    end,
+})
 
  local running = false
 
@@ -1159,3 +1225,115 @@ local Button = Tab:CreateButton({
    loadstring(game:HttpGet("https://pastebin.com/raw/s6Kt7pit"))()
    end,
 })
+
+ local Section = Tab:CreateSection("Job's.")
+
+local CashierRunning = false
+local CookRunning = false
+local BoxerRunning = false
+local DeliveryRunning = false
+local SupplierRunning = false
+local OnBreakRunning = false
+
+Tab:CreateToggle({
+    Name = "Cashier",
+    CurrentValue = false,
+    Flag = "CashierToggle",
+    Callback = function(Value)
+        CashierRunning = Value
+        if Value then
+            task.spawn(function()
+                while CashierRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "Cashier")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+Tab:CreateToggle({
+    Name = "Cook",
+    CurrentValue = false,
+    Flag = "CookToggle",
+    Callback = function(Value)
+        CookRunning = Value
+        if Value then
+            task.spawn(function()
+                while CookRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "Cook")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+Tab:CreateToggle({
+    Name = "Pizza Boxer",
+    CurrentValue = false,
+    Flag = "BoxerToggle",
+    Callback = function(Value)
+        BoxerRunning = Value
+        if Value then
+            task.spawn(function()
+                while BoxerRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "Pizza Boxer")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+Tab:CreateToggle({
+    Name = "Delivery",
+    CurrentValue = false,
+    Flag = "DeliveryToggle",
+    Callback = function(Value)
+        DeliveryRunning = Value
+        if Value then
+            task.spawn(function()
+                while DeliveryRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "Delivery")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+Tab:CreateToggle({
+    Name = "Supplier",
+    CurrentValue = false,
+    Flag = "SupplierToggle",
+    Callback = function(Value)
+        SupplierRunning = Value
+        if Value then
+            task.spawn(function()
+                while SupplierRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "Supplier")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+Tab:CreateToggle({
+    Name = "On Break",
+    CurrentValue = false,
+    Flag = "OnBreakToggle",
+    Callback = function(Value)
+        OnBreakRunning = Value
+        if Value then
+            task.spawn(function()
+                while OnBreakRunning do
+                    game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "On Break")
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
