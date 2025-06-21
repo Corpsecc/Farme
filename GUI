@@ -345,6 +345,13 @@ end)
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Remove Money Counter.",
+   Callback = function()
+   game:GetService("CoreGui").MoneyDisplay:destroy()
+   end,
+})
+
 local Tab = Window:CreateTab("Farme Stuff.", "rewind")
 local Section = Tab:CreateSection("Main.")
 
@@ -1190,7 +1197,7 @@ local Toggle = Tab:CreateToggle({
                     pcall(function()
                         workspace.Main.BuyPresentCoins:InvokeServer(workspace.PresentTable.Presents.Normal)
                     end)
-                    task.wait()
+                    task.wait(0.001)
                 end
             end)
         end
@@ -1225,6 +1232,66 @@ local Button = Tab:CreateButton({
    loadstring(game:HttpGet("https://pastebin.com/raw/s6Kt7pit"))()
    end,
 })
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local connection -- We'll store the CharacterAdded connection here
+local lastPosition = nil
+
+local Toggle = Tab:CreateToggle({
+   Name = "Respawn at Death Position",
+   CurrentValue = false,
+   Flag = "RespawnAtDeathPosition",
+   Callback = function(Value)
+      if Value then
+         -- Enable the feature
+         connection = player.CharacterAdded:Connect(function(character)
+            local function onCharacterAdded(char)
+               local humanoid = char:WaitForChild("Humanoid")
+
+               humanoid.Died:Connect(function()
+                  if char:FindFirstChild("HumanoidRootPart") then
+                     lastPosition = char.HumanoidRootPart.Position
+                  end
+               end)
+            end
+
+            local function onRespawn(char)
+               char:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(lastPosition or Vector3.new(0, 10, 0))
+            end
+
+            onCharacterAdded(character)
+
+            if lastPosition then
+               onRespawn(character)
+            end
+         end)
+
+         -- If the character already exists
+         if player.Character then
+            local character = player.Character
+            local humanoid = character:FindFirstChild("Humanoid")
+            if humanoid then
+               humanoid.Died:Connect(function()
+                  if character:FindFirstChild("HumanoidRootPart") then
+                     lastPosition = character.HumanoidRootPart.Position
+                  end
+               end)
+            end
+         end
+
+      else
+         -- Disable the feature
+         if connection then
+            connection:Disconnect()
+            connection = nil
+         end
+         lastPosition = nil
+      end
+   end,
+})
+
 
  local Section = Tab:CreateSection("Job's.")
 
