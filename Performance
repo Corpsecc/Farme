@@ -1,0 +1,139 @@
+while true do 
+setfpscap(20)
+task.wait(10)
+end
+
+--[=[ 
+Responsive UI + Centered Money Counter + Performance Cleanup
+]=]
+
+local G2L = {}
+
+-- Setup player and money reference
+local player = game.Players.LocalPlayer
+local playerGui = game:WaitForChild("CoreGui")
+local moneyValue = player:WaitForChild("Moneyz")
+
+-- Remove existing GUI if present
+local existingGui = playerGui:FindFirstChild("MoneyDisplay")
+if existingGui then
+    existingGui:Destroy()
+end
+
+-- Main ScreenGui
+G2L["1"] = Instance.new("ScreenGui")
+G2L["1"].Name = "MoneyDisplay"
+G2L["1"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+G2L["1"].IgnoreGuiInset = true
+G2L["1"].ResetOnSpawn = false
+G2L["1"].Parent = playerGui
+
+-- UIScale for consistent sizing
+local uiScale = Instance.new("UIScale")
+uiScale.Scale = 1
+uiScale.Parent = G2L["1"]
+
+-- Fullscreen Black Frame
+G2L["2"] = Instance.new("Frame", G2L["1"])
+G2L["2"].Name = "FullScreenFrame"
+G2L["2"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+G2L["2"].BorderSizePixel = 0
+G2L["2"].Size = UDim2.new(1, 0, 1, 0)
+G2L["2"].Position = UDim2.new(0, 0, 0, 0)
+
+-- Title Text
+G2L["3"] = Instance.new("TextLabel", G2L["1"])
+G2L["3"].Text = "Pizza Performance. 🍕"
+G2L["3"].BackgroundTransparency = 1
+G2L["3"].FontFace = Font.new("rbxasset://fonts/families/FredokaOne.json")
+G2L["3"].TextColor3 = Color3.fromRGB(86, 171, 255)
+G2L["3"].TextScaled = true
+G2L["3"].Size = UDim2.new(0.4, 0, 0.08, 0)
+G2L["3"].Position = UDim2.new(0.3, 0, 0.05, 0)
+
+-- Centered Money Display Text (same size as title, just below)
+G2L["4"] = Instance.new("TextLabel", G2L["1"])
+G2L["4"].Name = "MoneyLabel"
+G2L["4"].BackgroundTransparency = 1
+G2L["4"].Text = "Money: 0"
+G2L["4"].Font = Enum.Font.SourceSansBold
+G2L["4"].TextColor3 = Color3.fromRGB(86, 171, 255)
+G2L["4"].TextScaled = true
+G2L["4"].Size = UDim2.new(0.4, 0, 0.08, 0)
+G2L["4"].Position = UDim2.new(0.3, 0, 0.15, 0)
+
+-- Format function for commas
+local function formatWithCommas(number)
+    local formatted = tostring(number)
+    while true do
+        formatted, k = formatted:gsub("^(-?%d+)(%d%d%d)", '%1,%2')
+        if k == 0 then break end
+    end
+    return formatted
+end
+
+-- Money update loop
+task.spawn(function()
+    while true do
+        pcall(function()
+            G2L["4"].Text = "Money: " .. formatWithCommas(moneyValue.Value)
+        end)
+        task.wait(1)
+    end
+end)
+
+-- Performance Cleanup
+
+local thingsToDestroy = {
+    workspace:FindFirstChild("Teleport to Party Island"),
+    workspace:FindFirstChild("Trees"),
+    workspace:FindFirstChild("KrustyKrab"),
+    workspace:FindFirstChild("Cars"),
+    workspace:FindFirstChild("TheDump"),
+    workspace:FindFirstChild("Dock"),
+    workspace:FindFirstChild("PetShop"),
+    workspace:FindFirstChild("Street"),
+    workspace:FindFirstChild("Leaderboards"),
+    workspace:FindFirstChild("Lights"),
+    workspace:FindFirstChild("PizzaPlaceDoors"),
+    workspace:FindFirstChild("TheDump"),
+    workspace:FindFirstChild("Trucks")
+}
+
+for _, item in ipairs(thingsToDestroy) do
+    if item and item.Destroy then
+        item:Destroy()
+    end
+end
+
+for _, item in ipairs(workspace:GetDescendants()) do
+    if item:IsA("BasePart") and item.Name == "Roof" then
+        item:Destroy()
+    end
+end
+
+for _, item in ipairs(workspace:GetDescendants()) do
+    if item:IsA("BasePart") and item.Name:match("Street") then
+        item:Destroy()
+    end
+end
+
+for _, item in ipairs(workspace:GetDescendants()) do
+    if item:IsA("BasePart") and item.Name:match("BaseBoard") then
+        item:Destroy()
+    end
+end
+
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+
+for _, item in ipairs(workspace:GetDescendants()) do
+    if item:IsA("BasePart") then
+        if not item:IsDescendantOf(character) then
+            item.Transparency = 1
+        end
+    end
+end
+
+return G2L["1"], require
