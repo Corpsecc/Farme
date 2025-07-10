@@ -1,12 +1,3 @@
-while true do 
-setfpscap(20)
-task.wait(10)
-end
-
---[=[ 
-Responsive UI + Centered Money Counter + Performance Cleanup
-]=]
-
 local G2L = {}
 
 -- Setup player and money reference
@@ -51,7 +42,7 @@ G2L["3"].TextScaled = true
 G2L["3"].Size = UDim2.new(0.4, 0, 0.08, 0)
 G2L["3"].Position = UDim2.new(0.3, 0, 0.05, 0)
 
--- Centered Money Display Text (same size as title, just below)
+-- Centered Money Display Text
 G2L["4"] = Instance.new("TextLabel", G2L["1"])
 G2L["4"].Name = "MoneyLabel"
 G2L["4"].BackgroundTransparency = 1
@@ -82,8 +73,17 @@ task.spawn(function()
     end
 end)
 
--- Performance Cleanup
+-- FPS cap simulation loop (for performance)
+task.spawn(function()
+    while true do
+        pcall(function()
+            if setfpscap then setfpscap(20) end -- Only works in Synapse/etc
+        end)
+        task.wait(10)
+    end
+end)
 
+-- Performance Cleanup
 local thingsToDestroy = {
     workspace:FindFirstChild("Teleport to Party Island"),
     workspace:FindFirstChild("Trees"),
@@ -96,7 +96,6 @@ local thingsToDestroy = {
     workspace:FindFirstChild("Leaderboards"),
     workspace:FindFirstChild("Lights"),
     workspace:FindFirstChild("PizzaPlaceDoors"),
-    workspace:FindFirstChild("TheDump"),
     workspace:FindFirstChild("Trucks")
 }
 
@@ -124,15 +123,14 @@ for _, item in ipairs(workspace:GetDescendants()) do
     end
 end
 
+-- Hide all non-character BaseParts
 local Players = game:GetService("Players")
 local localPlayer = Players.LocalPlayer
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 
 for _, item in ipairs(workspace:GetDescendants()) do
-    if item:IsA("BasePart") then
-        if not item:IsDescendantOf(character) then
-            item.Transparency = 1
-        end
+    if item:IsA("BasePart") and not item:IsDescendantOf(character) then
+        item.Transparency = 1
     end
 end
 
