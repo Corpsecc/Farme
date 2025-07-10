@@ -108,7 +108,7 @@ local Window = Rayfield:CreateWindow({
     Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
     LoadingTitle = "Private Pizza GUI.",
     LoadingSubtitle = "by Corpse.",
-    Theme = "Amethyst", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+    Theme = "AmberGlow", -- Check https://docs.sirius.menu/rayfield/configuration/themes
  
     DisableRayfieldPrompts = false,
     DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
@@ -520,7 +520,7 @@ local Button = Tab:CreateButton({
 local Button = Tab:CreateButton({
    Name = "Performance Script.",
    Callback = function()
-   loadstring(game:HttpGet("https://pastebin.com/raw/xQr05Z4K"))() 
+   loadstring(game:HttpGet('https://raw.githubusercontent.com/Corpsecc/Farme/refs/heads/main/Performance'))() 
    end,
 })
 
@@ -529,7 +529,7 @@ local Tab = Window:CreateTab("Trolling.", "rewind")
 local Section = Tab:CreateSection("Main Troll's.")
 
  local Input = Tab:CreateInput({
-   Name = "Fling.",
+   Name = "Fling (Working).",
    CurrentValue = "",
    PlaceholderText = "Nome",
    RemoveTextAfterFocusLost = false,
@@ -596,7 +596,7 @@ local Section = Tab:CreateSection("Main Troll's.")
 })
 
 local Button = Tab:CreateButton({
-    Name = "Fling all.",
+    Name = "Fling all (Working).",
     Callback = function()
         local Players = game:GetService("Players")
 		local LocalPlayer = Players.LocalPlayer
@@ -699,7 +699,7 @@ local Button = Tab:CreateButton({
  })
 
 local Input = Tab:CreateInput({
-    Name = "Kill (With Supplier).",
+    Name = "Kill (With Supplier/Working).",
     CurrentValue = "",
     PlaceholderText = "Name",
     RemoveTextAfterFocusLost = false,
@@ -767,7 +767,7 @@ local Input = Tab:CreateInput({
  })
 
  local Input = Tab:CreateInput({
-    Name = "Kill (In Void).",
+    Name = "Kill (In Void/Working).",
     CurrentValue = "",
     PlaceholderText = "Name",
     RemoveTextAfterFocusLost = false,
@@ -840,7 +840,7 @@ local Input = Tab:CreateInput({
  })
 
  local Input = Tab:CreateInput({
-    Name = "Kick (Party Island).",
+    Name = "Kick (Party Island/Patched).",
     CurrentValue = "",
     PlaceholderText = "Name",
     RemoveTextAfterFocusLost = false,
@@ -908,7 +908,7 @@ local Input = Tab:CreateInput({
  })
 
   local Input = Tab:CreateInput({
-    Name = "Kick (KrustyKrab).",
+    Name = "Kick (KrustyKrab/Patched).",
     CurrentValue = "",
     PlaceholderText = "Name",
     RemoveTextAfterFocusLost = false,
@@ -984,7 +984,7 @@ end
 local Section = Tab:CreateSection("Extra.")
 
 local Button = Tab:CreateButton({
-   Name = "Remove Manager.",
+   Name = "Remove Manager (Working).",
    Callback = function()
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
@@ -1049,39 +1049,43 @@ local Button = Tab:CreateButton({
 })
 
  local Button = Tab:CreateButton({
-    Name = "Boxer Breaker.",
+    Name = "Boxer Breaker (Working).",
     Callback = function()
         Network:FireServer("OpenBox", game:GetService("ReplicatedStorage").Supplies.BoxClosed)
         Network:FireServer("CloseBox", game:GetService("ReplicatedStorage").Supplies.BoxOpen)
     end,
  })
 
-  local Button = Tab:CreateButton({
-    Name = "Snowball Spam.",
-    Callback = function()
-        getgenv().loop = true
+local loop = false
+local giveItemThread
 
+local Toggle = Tab:CreateToggle({
+    Name = "SnowBall Spam(Working).",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        loop = Value
 
-task.spawn(function()
-    while loop do task.wait()
-        game:GetService("ReplicatedStorage"):WaitForChild("PlayerChannel"):FireServer("GiveItem", 19328185)
-    end
-end)
+        if loop then
+            -- Start giving the item
+            giveItemThread = task.spawn(function()
+                while loop do
+                    task.wait()
+                    game:GetService("ReplicatedStorage"):WaitForChild("PlayerChannel"):FireServer("GiveItem", 19328185)
+                end
+            end)
 
-game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(obj)
-    task.wait()
-    obj.Parent = game.Players.LocalPlayer.Character
-end)
-
--- while loop do task.wait()
---     for _,obj in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
---         if obj.Name == "snowball" then
---             game.Players.LocalPlayer.Character:FindFirstChild("Snowball").Clicked:FireServer(Vector3.new(0,0,1))
---         end
---     end
--- end
+            -- Auto-equip on pickup
+            game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(obj)
+                task.wait()
+                obj.Parent = game.Players.LocalPlayer.Character
+            end)
+        else
+            -- Stop the loop
+            loop = false
+        end
     end,
- })
+})
 
 local Tab = Window:CreateTab("Working Server's.", "rewind")
 local Section = Tab:CreateSection("Idk how to call this.")
@@ -1179,7 +1183,7 @@ local Tab = Window:CreateTab("Teleport's. ", "rewind") -- Title, Image
  local Button = Tab:CreateButton({
     Name = " To Party Island.",
     Callback = function()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(88.7533112, 0.200000048, -315.452209, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        game:GetService("TeleportService"):Teleport(191029074, game.Players.LocalPlayer)
     end,
  })
 
@@ -1228,63 +1232,6 @@ hrp.CFrame = target.CFrame + Vector3.new(0, 5, 0)
 local Tab = Window:CreateTab("Usefull Stuff. ", "rewind") -- Title, Image
  local Section = Tab:CreateSection("Main. ")
 
-
-Tab:CreateButton({
-    Name = "Press and read before using Event Present's.",
-    Callback = function()
-        Rayfield:Notify({
-            Title = "READ BEFORE YOU USE ANY PRESENT TYPE.",
-            Content = "For this to work send me an dm and i will join with my account(only affect's the Event Present's).",
-            Duration = 15, -- seconds
-            Image =  "rewind", -- optional image asset ID
-        })
-    end,
-})
-
- local running = false
-
-local running = false
-
-local Toggle = Tab:CreateToggle({
-    Name = "Auto Buy Present's.",
-    CurrentValue = false,
-    Flag = "AutoBuyPresentsToggle",
-    Callback = function(Value)
-        running = Value
-        if running then
-            task.spawn(function()
-                while running do
-                    pcall(function()
-                        workspace.Main.BuyPresentCoins:InvokeServer(workspace.PresentTable.Presents.Normal)
-                    end)
-                    task.wait(0.001)
-                end
-            end)
-        end
-    end,
-})
-
-
-local Toggle = Tab:CreateToggle({
-    Name = "Auto Buy Halloween Present",
-    CurrentValue = false,
-    Flag = "AutoBuyHalloween",
-    Callback = function(Value)
-        running = Value
-        if running then
-            task.spawn(function()
-                while running do
-                    pcall(function()
-                        workspace.Main.BuyPresentCoins:InvokeServer(
-                            game:GetService("Players").ohhgustavolimaaii.Backpack:FindFirstChild("Halloween")
-                        )
-                    end)
-                    task.wait(0.005)
-                end
-            end)
-        end
-    end,
-})
 
 local Button = Tab:CreateButton({
    Name = "Sell Inv.",
@@ -1400,6 +1347,276 @@ Tab:CreateToggle({
                 while OnBreakRunning do
                     game:GetService("ReplicatedStorage").PlayerChannel:FireServer("ChangeJob", "On Break")
                     task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+local Tab = Window:CreateTab("Present's.", "rewind")
+local Section = Tab:CreateSection("Misc.")
+
+ local running = false
+
+local running = false
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Present's (Ass).",
+    CurrentValue = false,
+    Flag = "AutoBuyPresentsToggle",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    pcall(function()
+                        workspace.Main.BuyPresentCoins:InvokeServer(workspace.PresentTable.Presents.Normal)
+                    end)
+                    task.wait(0.001)
+                end
+            end)
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Present V2 (Good).",
+    CurrentValue = false,
+    Flag = "Furniture Present",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    local VirtualInputManager = game:GetService("VirtualInputManager")
+                    workspace:WaitForChild("PresentTable"):WaitForChild("Presents"):WaitForChild("Normal"):WaitForChild("ClickDetector"):WaitForChild("Detector"):FireServer()
+                    task.wait(.086)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.BackSlash, false, game)  -- key down
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.BackSlash, false, game)  -- key down
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)  -- key down
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)  -- key down
+                end
+            end)
+        end
+    end,
+})
+local remote = game:GetService("ReplicatedStorage"):WaitForChild("PlayerChannel")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local running = false
+
+local function sellAllWrappedItems()
+    local backpack = LocalPlayer:WaitForChild("Backpack")
+    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    for _, tool in pairs(backpack:GetChildren()) do
+        if tool.Name == "Normal" and tool:FindFirstChild("Rarity") then
+            if tool:FindFirstChild("PresentCamera") then
+                tool.PresentCamera.Disabled = true
+            end
+            local id = tool:FindFirstChild("RewardAssetId") and tool.RewardAssetId.Value
+            if id then
+                humanoid:EquipTool(tool)
+                remote:FireServer("PutUnwrappedItemInInventory", id)
+                remote:FireServer("SellInventoryItem", id)
+                tool:Destroy()
+            end
+        end
+    end
+end
+
+local function autoSellLoop()
+    while running do
+        local backpack = LocalPlayer:WaitForChild("Backpack")
+        local normalCount = 0
+        for _, item in pairs(backpack:GetChildren()) do
+            if item.Name == "Normal" then
+                normalCount = normalCount + 1
+            end
+        end
+
+        if normalCount > 5 then
+            sellAllWrappedItems()
+        end
+        task.wait(1)
+    end
+end
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Present + Sell Instantly.",
+    CurrentValue = false,
+    Flag = "Furniture Present",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                task.spawn(autoSellLoop)
+                while running do
+                    workspace:WaitForChild("PresentTable"):WaitForChild("Presents"):WaitForChild("Normal"):WaitForChild("ClickDetector"):WaitForChild("Detector"):FireServer()
+                    task.wait(0.086)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.BackSlash, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.BackSlash, false, game)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                end
+            end)
+        end
+    end,
+})
+
+local ToggleMovie = Tab:CreateToggle({
+    Name = "Auto Buy Movie Present.",
+    CurrentValue = false,
+    Flag = "Movie Gift",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                local present = workspace:WaitForChild("PresentTable"):WaitForChild("Presents"):WaitForChild("Movie")
+                local clickDetector = present:WaitForChild("ClickDetector"):WaitForChild("Detector")
+
+                while running do
+                    clickDetector:FireServer()
+                    task.wait(0.086)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.BackSlash, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.BackSlash, false, game)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                end
+            end)
+        end
+    end,
+})
+
+local ToggleGear = Tab:CreateToggle({
+    Name = "Auto Buy Gear Present.",
+    CurrentValue = false,
+    Flag = "Gear Present",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                local present = workspace:WaitForChild("PresentTable"):WaitForChild("Presents"):WaitForChild("Gear")
+                local clickDetector = present:WaitForChild("ClickDetector"):WaitForChild("Detector")
+
+                while running do
+                    clickDetector:FireServer()
+                    task.wait(0.086)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.BackSlash, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.BackSlash, false, game)
+                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                    task.wait()
+                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                end
+            end)
+        end
+    end,
+})
+
+local Section = Tab:CreateSection("Event Present's.")
+
+Tab:CreateButton({
+    Name = "Press and read before using Event Present's.",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "READ BEFORE YOU USE ANY PRESENT TYPE.",
+            Content = "For this to work send me an dm and i will join with my account(only affect's the Event Present's).",
+            Duration = 15, -- seconds
+            Image =  "rewind", -- optional image asset ID
+        })
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Christmas Present.",
+    CurrentValue = false,
+    Flag = "AutoBuyHalloween",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    pcall(function()
+                        workspace.Main.BuyPresentCoins:InvokeServer(
+                            game:GetService("Players").ohhgustavolimaaii.Backpack:FindFirstChild("Christmas")
+                        )
+                    end)
+                    task.wait(0.005)
+                end
+            end)
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Thanksgiving Present.",
+    CurrentValue = false,
+    Flag = "AutoBuyHalloween",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    pcall(function()
+                        workspace.Main.BuyPresentCoins:InvokeServer(
+                            game:GetService("Players").ohhgustavolimaaii.Backpack:FindFirstChild("Thanksgiving")
+                        )
+                    end)
+                    task.wait(0.005)
+                end
+            end)
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Autumn Present.",
+    CurrentValue = false,
+    Flag = "AutoBuyHalloween",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    pcall(function()
+                        workspace.Main.BuyPresentCoins:InvokeServer(
+                            game:GetService("Players").ohhgustavolimaaii.Backpack:FindFirstChild("Autumn")
+                        )
+                    end)
+                    task.wait(0.005)
+                end
+            end)
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Buy Halloween Present.",
+    CurrentValue = false,
+    Flag = "AutoBuyHalloween",
+    Callback = function(Value)
+        running = Value
+        if running then
+            task.spawn(function()
+                while running do
+                    pcall(function()
+                        workspace.Main.BuyPresentCoins:InvokeServer(
+                            game:GetService("Players").ohhgustavolimaaii.Backpack:FindFirstChild("Halloween")
+                        )
+                    end)
+                    task.wait(0.005)
                 end
             end)
         end
