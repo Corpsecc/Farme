@@ -1,17 +1,21 @@
 local G2L = {}
 
--- Setup player and money reference
+task.spawn(function()
+    while true do
+        setfpscap(10)
+        task.wait(10)
+    end
+end)
+
 local player = game.Players.LocalPlayer
 local playerGui = game:WaitForChild("CoreGui")
 local moneyValue = player:WaitForChild("Moneyz")
 
--- Remove existing GUI if present
 local existingGui = playerGui:FindFirstChild("MoneyDisplay")
 if existingGui then
     existingGui:Destroy()
 end
 
--- Main ScreenGui
 G2L["1"] = Instance.new("ScreenGui")
 G2L["1"].Name = "MoneyDisplay"
 G2L["1"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -19,12 +23,10 @@ G2L["1"].IgnoreGuiInset = true
 G2L["1"].ResetOnSpawn = false
 G2L["1"].Parent = playerGui
 
--- UIScale for consistent sizing
 local uiScale = Instance.new("UIScale")
 uiScale.Scale = 1
 uiScale.Parent = G2L["1"]
 
--- Fullscreen Black Frame
 G2L["2"] = Instance.new("Frame", G2L["1"])
 G2L["2"].Name = "FullScreenFrame"
 G2L["2"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -32,7 +34,6 @@ G2L["2"].BorderSizePixel = 0
 G2L["2"].Size = UDim2.new(1, 0, 1, 0)
 G2L["2"].Position = UDim2.new(0, 0, 0, 0)
 
--- Title Text
 G2L["3"] = Instance.new("TextLabel", G2L["1"])
 G2L["3"].Text = "Pizza Performance. 🍕"
 G2L["3"].BackgroundTransparency = 1
@@ -42,7 +43,6 @@ G2L["3"].TextScaled = true
 G2L["3"].Size = UDim2.new(0.4, 0, 0.08, 0)
 G2L["3"].Position = UDim2.new(0.3, 0, 0.05, 0)
 
--- Centered Money Display Text
 G2L["4"] = Instance.new("TextLabel", G2L["1"])
 G2L["4"].Name = "MoneyLabel"
 G2L["4"].BackgroundTransparency = 1
@@ -53,7 +53,6 @@ G2L["4"].TextScaled = true
 G2L["4"].Size = UDim2.new(0.4, 0, 0.08, 0)
 G2L["4"].Position = UDim2.new(0.3, 0, 0.15, 0)
 
--- Format function for commas
 local function formatWithCommas(number)
     local formatted = tostring(number)
     while true do
@@ -63,7 +62,6 @@ local function formatWithCommas(number)
     return formatted
 end
 
--- Money update loop
 task.spawn(function()
     while true do
         pcall(function()
@@ -73,65 +71,24 @@ task.spawn(function()
     end
 end)
 
--- FPS cap simulation loop (for performance)
 task.spawn(function()
-    while true do
-        pcall(function()
-            if setfpscap then setfpscap(20) end -- Only works in Synapse/etc
-        end)
-        task.wait(10)
+    if not workspace:FindFirstChild("CDough") then
+        getgenv().Folder = Instance.new("Folder", workspace)
+        Folder.Name = "CDough"
+    end
+    for i,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Part") then
+            v.Transparency = 1
+        elseif v:IsA("Part") and (v.Name == "Street" or v.Name == "Floor" or v.Name == "BasePlate" or v.Name == "Street2") then
+            v.Transparency = 0
+        end
+    end
+    for i = 1, 3 do
+        task.wait(1)
+        for _, Jobs in pairs(workspace.JobButtons:GetChildren()) do
+            if Jobs:IsA("Part") then
+                Jobs.Position = Vector3.new(Jobs.Position.X, -3, Jobs.Position.Z)
+            end
+        end
     end
 end)
-
--- Performance Cleanup
-local thingsToDestroy = {
-    workspace:FindFirstChild("Teleport to Party Island"),
-    workspace:FindFirstChild("Trees"),
-    workspace:FindFirstChild("KrustyKrab"),
-    workspace:FindFirstChild("Cars"),
-    workspace:FindFirstChild("TheDump"),
-    workspace:FindFirstChild("Dock"),
-    workspace:FindFirstChild("PetShop"),
-    workspace:FindFirstChild("Street"),
-    workspace:FindFirstChild("Leaderboards"),
-    workspace:FindFirstChild("Lights"),
-    workspace:FindFirstChild("PizzaPlaceDoors"),
-    workspace:FindFirstChild("Trucks")
-}
-
-for _, item in ipairs(thingsToDestroy) do
-    if item and item.Destroy then
-        item:Destroy()
-    end
-end
-
-for _, item in ipairs(workspace:GetDescendants()) do
-    if item:IsA("BasePart") and item.Name == "Roof" then
-        item:Destroy()
-    end
-end
-
-for _, item in ipairs(workspace:GetDescendants()) do
-    if item:IsA("BasePart") and item.Name:match("Street") then
-        item:Destroy()
-    end
-end
-
-for _, item in ipairs(workspace:GetDescendants()) do
-    if item:IsA("BasePart") and item.Name:match("BaseBoard") then
-        item:Destroy()
-    end
-end
-
--- Hide all non-character BaseParts
-local Players = game:GetService("Players")
-local localPlayer = Players.LocalPlayer
-local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-
-for _, item in ipairs(workspace:GetDescendants()) do
-    if item:IsA("BasePart") and not item:IsDescendantOf(character) then
-        item.Transparency = 1
-    end
-end
-
-return G2L["1"], require
