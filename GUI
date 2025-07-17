@@ -99,7 +99,27 @@ function FireSnow(plr)
 	end
 end
 
+for i,v in pairs(game:GetDescendants()) do
+    if v:IsA("Seat") or v.Name =="Seat" or v:IsA("VehicleSeat") then
+        v:Destroy()
+    end
+end
 
+local carsFolder = workspace:WaitForChild("Cars")
+
+local function onChildAdded(child)
+    task.wait(0.1)
+    if child and child:IsDescendantOf(carsFolder) then
+        child:Destroy()
+        print("Deleted a car: " .. child.Name)
+    end
+end
+
+carsFolder.ChildAdded:Connect(onChildAdded)
+
+for _, item in ipairs(carsFolder:GetChildren()) do
+    item:Destroy()
+end
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -1554,16 +1574,14 @@ local ToggleGear = Tab:CreateToggle({
 
 local Section = Tab:CreateSection("Event Present's.")
 
-Tab:CreateButton({
-    Name = "Press and read before using Event Present's.",
-    Callback = function()
-        Rayfield:Notify({
-            Title = "READ BEFORE YOU USE ANY PRESENT TYPE.",
-            Content = "For this to work send me an dm and i will join with my account(only affect's the Event Present's).",
-            Duration = 15, -- seconds
-            Image =  "rewind", -- optional image asset ID
-        })
-    end,
+local Button = Tab:CreateButton({
+   Name = "Press and Read before using Event Present's.",
+   Callback = function()
+   local title = "Event Present."
+local text = "For this to work send me an dm and i will join with my account(only affect's the Event Present's)."
+local answer1 = "Ok."
+workspace.MessageService.Dialog.Dialog:Fire(title,text,answer1,answer2,true,true)
+   end,
 })
 
 local Toggle = Tab:CreateToggle({
